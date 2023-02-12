@@ -1,0 +1,164 @@
+import csv
+import json
+import pandas as pd
+import os
+
+# Open a CSV file for writing
+with open('output.csv', 'w', newline='', encoding='utf-8') as c:
+   
+    # Create an empty list to store the data from each JSON file
+    data = []
+
+# Get the list of directories where the JSON files are stored
+directories = ['D:/phone/pulse/data/aggregated/transaction/country/india/state/andaman-&-nicobar-islands/2018', 
+               'D:/phone/pulse/data/aggregated/transaction/country/india/state/andaman-&-nicobar-islands/2019', 
+               'D:/phone/pulse/data/aggregated/transaction/country/india/state/andaman-&-nicobar-islands/2020', 
+               'D:/phone/pulse/data/aggregated/transaction/country/india/state/andaman-&-nicobar-islands/2021', 
+               'D:/phone/pulse/data/aggregated/transaction/country/india/state/andaman-&-nicobar-islands/2022',
+               'D:/phone/pulse/data/aggregated/transaction/country/india/state/andhra-pradesh/2018',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/andhra-pradesh/2019',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/andhra-pradesh/2020',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/andhra-pradesh/2021',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/andhra-pradesh/2022',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/arunachal-pradesh/2018',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/arunachal-pradesh/2019',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/arunachal-pradesh/2020',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/arunachal-pradesh/2021',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/arunachal-pradesh/2022',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/assam/2018',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/assam/2019',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/assam/2020',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/assam/2021',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/assam/2022',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/bihar/2018',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/bihar/2019',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/bihar/2020',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/bihar/2021',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/bihar/2022',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/chandigarh/2018',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/chandigarh/2019',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/chandigarh/2020',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/chandigarh/2021',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/chandigarh/2022',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/chhattisgarh/2018',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/chhattisgarh/2019',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/chhattisgarh/2020',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/chhattisgarh/2021',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/chhattisgarh/2022',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/chhattisgarh/2022',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/delhi/2018',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/delhi/2019',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/delhi/2020',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/delhi/2021',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/delhi/2022',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/goa/2018',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/goa/2019',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/goa/2020',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/goa/2021',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/goa/2022',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/gujarat/2018',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/gujarat/2019',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/gujarat/2020',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/gujarat/2021',
+                'D:/phone/pulse/data/aggregated/transaction/country/india/state/gujarat/2022',
+                ]
+
+# Loop over all directories
+for directory_path in directories:
+    # Loop over all JSON files in the directory
+    for filename in os.listdir(directory_path):
+        # Skip any files that are not JSON files
+        if not filename.endswith('.json'):
+            continue
+
+        # Load the data from the JSON file into a pandas DataFrame
+        df = pd.read_json(os.path.join(directory_path, filename))
+    
+        # Append the DataFrame to the list
+        data.append(df)
+
+# Concatenate all DataFrames into a single DataFrame
+result = pd.concat(data)
+
+# Write the DataFrame to a CSV file
+result.to_csv('output.csv', index=False)
+
+
+import pandas as pd
+
+# Load the data from a CSV file into a Pandas DataFrame
+df = pd.read_csv('output.csv')
+
+# Check for missing values and handle them as desired
+df.fillna(value=0, inplace=True)
+print(df)
+# Transform the data into a format suitable for analysis and visualization
+#df['TOTAL'] = df['count'] * df['amount']
+#df = df.groupby('region').agg({'TOTAL': 'count'})
+#df.reset_index(inplace=True)
+import sqlite3
+
+# Connect to the database
+conn = sqlite3.connect('database.db')
+
+# Create a cursor to execute SQL commands
+cursor = conn.cursor()
+
+# Create the table
+table_create_query = '''CREATE TABLE IF NOT EXISTS transactions (
+    state TEXT,
+    year INTEGER,
+    amount REAL
+)'''
+cursor.execute(table_create_query)
+
+# Read the data from the CSV file
+with open('output.csv', 'r') as f:
+    reader = csv.reader(f)
+    header = next(reader)
+    for row in reader:
+        state = row[0]
+        year = int(row[1])
+        amount = float(row[2])
+        
+        # Insert the data into the table
+        cursor.execute('''INSERT INTO transactions
+                          (state, year, amount)
+                          VALUES
+                          (?, ?, ?)''',
+                       (state, year, amount))
+
+# Commit the changes
+conn.commit()
+
+# Close the connection
+conn.close()
+
+import streamlit as st
+import plotly.express as px
+
+
+# Load data into a pandas dataframe
+data = pd.read_csv("output.csv")
+
+# Create a function to display the map
+def show_map(data, location, column):
+    fig = px.scatter_mapbox(data, lat=location[0], lon=location[1], color=column,
+                            color_continuous_scale=px.colors.sequential.Plasma,
+                            size=column, size_max=15, zoom=3)
+    return fig
+
+# Create a user interface with Streamlit
+st.title("Interactive Dashboard")
+
+# Add a dropdown to select the column to display on the map
+column_options = list(data.columns)
+selected_column = st.selectbox("Select a column to display", column_options)
+
+# Add a dropdown to select the location column
+location_options = [("Latitude", "lat"), ("Longitude", "lon")]
+selected_location = st.selectbox("Select the location column", location_options)
+
+# Display the map
+st.plotly_chart(show_map(data, selected_location, selected_column))
+
